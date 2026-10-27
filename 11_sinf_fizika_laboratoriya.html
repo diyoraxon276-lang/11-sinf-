@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11-Sinf Fizika Virtual Laboratoriyasi</title>
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: #111827;
+            --card-border: #1f2937;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --text-main: #f9fafb;
+            --text-sub: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 2px solid #2563eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #60a5fa;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #1e293b;
+            color: #e2e8f0;
+            border: 1px solid #334155;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border-color: #60a5fa;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-view {
+            display: none;
+        }
+        .section-view.active {
+            display: block;
+        }
+
+        .bob-header {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin: 35px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0891b2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 25px;
+        }
+
+        .topic-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .topic-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+
+        .topic-number {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-amber);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .topic-title {
+            font-size: 1.15rem;
+            color: #f3f4f6;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .plans-box {
+            background: #0f172a;
+            border-left: 3px solid var(--accent-blue);
+            padding: 10px 14px;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88rem;
+        }
+
+        .plans-box ul {
+            padding-left: 16px;
+            color: #d1d5db;
+        }
+
+        .plans-box li {
+            margin-bottom: 3px;
+        }
+
+        .info-box {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid #1e293b;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #9ca3af;
+        }
+
+        .canvas-box {
+            position: relative;
+            width: 100%;
+            height: 260px;
+            background-color: #030712;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #1f2937;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            color: #d1d5db;
+        }
+
+        .controls-bar label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .controls-bar input[type="range"] {
+            accent-color: var(--accent-blue);
+        }
+
+        .btn-ctrl {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .btn-ctrl:hover {
+            background: #2563eb;
+        }
+
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-card h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 8px;
+        }
+
+        .q-item {
+            margin-bottom: 20px;
+            background: #0f172a;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .q-text {
+            font-weight: 600;
+            color: #f3f4f6;
+            margin-bottom: 10px;
+        }
+
+        .q-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .opt-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1e293b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .opt-label:hover {
+            background: #334155;
+        }
+
+        .quiz-result {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        @media (max-width: 600px) {
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>11-Sinf Fizika Virtual Laboratoriyasi va Nazorat Tizimi</h1>
+        <p>45 ta mavzu bo'yicha to'liq 3 ta reja, nazariya, interaktiv 2D/3D Canvas simulyatsiyalari hamda BSB/CHSB baholash testlari</p>
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('simulations')">🎮 45 ta Mavzu va Simulyatsiyalar</button>
+            <button class="tab-btn" onclick="switchTab('bsb')">📝 BSB Nazorat Ishlari (1-4 BSB)</button>
+            <button class="tab-btn" onclick="switchTab('chsb')">🏆 CHSB Imtihon Testlari (1-2 CHSB)</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="sec-simulations" class="section-view active">
+            <div id="topics-render-area"></div>
+        </div>
+        <div id="sec-bsb" class="section-view">
+            <h2 class="bob-header">📝 Bo'lim Bo'yicha Summativ Baholash (BSB 1-4)</h2>
+            <div id="bsb-render-area"></div>
+        </div>
+        <div id="sec-chsb" class="section-view">
+            <h2 class="bob-header">🏆 Choraklik / Yarim Yillik Summativ Baholash (CHSB 1-2)</h2>
+            <div id="chsb-render-area"></div>
+        </div>
+    </div>
+
+    <script>
+        const topics = [
+            {id: 1, bob: "I bob. Magnit maydon", title: "1-mavzu. Magnit maydon. Magnit maydonni tavsiflovchi kattaliklar", plans: ["Magnit maydon tushunchasi va uning paydo boʻlish manbalari.", "Magnit induksiya vektori (B) va uning birliklari (Tesla).", "Magnit maydon chiziqlari va uning asosiy xossalari."], info: "Magnit maydon harakatdagi zaryadlangan zarrachalar va tokli o'tkazgichlar atrofida hosil bo'ladi. Uning kuch tavsifi magnit induksiya vektori (B) hisoblanadi. Birliklar sistemasida Tesla (T) da o'lchanadi."},
+            {id: 2, bob: "I bob. Magnit maydon", title: "2-mavzu. Bir jinsli magnit maydonning tokli ramkani aylantiruvchi momenti", plans: ["Bir jinsli magnit maydonga joylashtirilgan tokli ramka.", "Tokli ramkaga ta'sir etuvchi kuch momenti (M = I S B sin α).", "Magnit momenti tushunchasi va uning amaliy ahamiyati."], info: "Bir jinsli magnit maydonga joylashtirilgan tokli ramkaga Amper kuchlari jufti ta'sir qiladi. Natijada ramka buriladi. Kuch momenti M = I·S·B·sin(α) ga teng."},
+            {id: 3, bob: "I bob. Magnit maydon", title: "3-mavzu. Tokli toʻgʻri oʻtkazgichning, halqa va gʻaltakning magnit maydoni", plans: ["Tokli toʻgʻri oʻtkazgich atrofidagi magnit maydoni (Bio-Savar-Laplas qonuni).", "Tokli halqaning markazidagi magnit maydon induksiyasi.", "Gʻaltak (solenoid) ichidagi va tashqarisidagi magnit maydon."], info: "To'g'ri o'tkazgichdagi B = μ0 I / (2π r), halqa markazida B = μ0 I / (2 R), solenoid ichida esa B = μ0 n I formulasi bilan aniqlanadi."},
+            {id: 4, bob: "I bob. Magnit maydon", title: "4-mavzu. Tokli oʻtkazgichni magnit maydonda koʻchirishda bajarilgan ish", plans: ["Magnit maydonda harakatlanayotgan tokli oʻtkazgichga ta'sir etuvchi Amper kuchi.", "Magnit oqimi tushunchasi (Φ = B S cos α) va uning birligi (Veber).", "Tokli oʻtkazgichni koʻchirishda bajarilgan ishni hisoblash (A = I ΔΦ)."], info: "Magnit maydonida tokli o'tkazgich ko'chirilganda Amper kuchi ish bajaradi. Bajarilgan ish A = I · ΔΦ formulasi yordamida topiladi."},
+            {id: 5, bob: "I bob. Magnit maydon", title: "5-mavzu. Tokli oʻtkazgichlarning oʻzaro ta'sir kuchi", plans: ["Parallel tokli oʻtkazgichlarning oʻzaro ta'siri (tortishish va itarish).", "Parallel oʻtkazgichlar orasidagi Amper kuchi va uning hisoblanishi.", "Xalqaro birliklar sistemasida Amper (A) birligining ta'rifi."], info: "Bir yo'nalishda tok oqayotgan parallel o'tkazgichlar bir-birini tortadi, qarama-qarshi yo'nalishdagilar esa itaradi. F/l = μ0 I1 I2 / (2π d) formulasi bilan aniqlanadi."},
+            {id: 6, bob: "I bob. Magnit maydon", title: "6-mavzu. Bir jinsli magnit maydonida zaryadli zarraning harakati. Lorens kuchi", plans: ["Zaryadli zarraga magnit maydonda ta'sir etuvchi Lorens kuchi (F_L = q v B sin α).", "Zarraning bir jinsli magnit maydondagi trayektoriyasi (doira va spiral harakat).", "Lorens kuchining texnikada va fizikada qoʻllanilishi (siklotron, mass-spektrometr)."], info: "Lorens kuchi harakatdagi zaryadga ta'sir qilib, uning tezlik yo'nalishini o'zgartiradi. Zarracha R = m v / (q B) radiusli aylana bo'ylab harakatlanadi."},
+            {id: 7, bob: "II bob. Elektromagnit induksiya", title: "7-mavzu. Elektromagnit induksiya hodisasi. Faradey qonuni", plans: ["Elektromagnit induksiya hodisasining kashf etilishi va uning mohiyati.", "Faradeyning elektromagnit induksiya qonuni (E_i = -ΔΦ / Δt).", "Lens qoidasi va induksion tokning yoʻnalishini aniqlash."], info: "Yopiq konturni kesib o'tuvchi magnit oqimi o'zgarganda unda induksiya EYUK hosil bo'ladi."},
+            {id: 8, bob: "II bob. Elektromagnit induksiya", title: "8-mavzu. Oʻzinduksiya hodisasi. Oʻzinduksiya EYUK. Induktivlik", plans: ["Zanjirdagi tok oʻzgarganda oʻzinduksiya hodisasining namoyon boʻlishi.", "Konturning induktivligi (L) va uning oʻlchov birligi (Genri).", "Oʻzinduksiya EYUK (E_s = -L ΔI / Δt) va oʻtish jarayonlari."], info: "Zanjirdagi tok kuchi o'zgarganda shu konturning o'zida EYUK hosil bo'lishi o'zinduksiya hodisasidir."},
+            {id: 9, bob: "II bob. Elektromagnit induksiya", title: "9-mavzu. Moddalarning magnit xossalari", plans: ["Diamagnetik va paramagnetik moddalar, ularning magnit kirituvchanligi (μ).", "Ferromagnetik moddalar va ularning oʻziga xos xususiyatlari (gisterezis halqasi).", "Kyuri nuqtasi hamda ferromagnetiklarning amaliyotda qoʻllanilishi."], info: "Moddalar diamagnetik, paramagnetik va ferromagnetiklarga bo'linadi."},
+            {id: 10, bob: "II bob. Elektromagnit induksiya", title: "10-mavzu. Magnit maydon energiyasi", plans: ["Tokli gʻaltakda jamlangan magnit maydon energiyasi (W = L I² / 2).", "Magnit maydon energiyasining hajmiy zichligi (w = B² / (2 μ0)).", "Magnit va elektr maydon energiyalarining oʻzaro qiyosiy tahlili."], info: "G'altakdan tok o'tganda unda magnit maydon energiyasi jamlanadi: W = L I² / 2."},
+            {id: 11, bob: "III bob. Elektromagnit tebranishlar", title: "11-mavzu. Erkin elektromagnit tebranishlar (tebranish konturi)", plans: ["Tebranish konturining tuzilishi (kondensator va gʻaltak).", "Tebranish konturida elektr va magnit maydon energiyalarining davriy aylanishi.", "Tomson formulasi (T = 2π √(LC)) va erkin tebranishlar davri."], info: "LC konturda kondensator elektr maydon energiyasi va g'altak magnit maydon energiyasi aylanib turadi."},
+            {id: 12, bob: "III bob. Elektromagnit tebranishlar", title: "12-mavzu. Tebranishlarni grafik ravishda tasvirlash. Soʻnuvchi tebranishlar", plans: ["Zaryad, tok va kuchlanish tebranishlarining vaqtga bogʻliqlik grafiklari.", "Aktiv qarshilik tufayli elektromagnit tebranishlarning soʻnishi.", "Soʻnish logarifmik dekrementi va konturning sifat koʻrsatgichi."], info: "Real konturda R qarshilik bo'lgani uchun energiya issiqlikka aylanib so'nadi."},
+            {id: 13, bob: "III bob. Elektromagnit tebranishlar", title: "13-mavzu. Tranzistorli elektromagnit tebranishlar generatori", plans: ["Soʻnmas tebranishlar hosil qilish prinsiplari va musbat teskari aloqa.", "Tranzistorli avtotebranish generatorining ishlash prinsipi va sxemasi.", "Avtotebranish generatorlarining radioelektronikadagi oʻrni."], info: "Tranzistorli avtogeneratorda induktiv yoki sig'imiy teskari aloqa orqali tebranishlar quvvatlantiriladi."},
+            {id: 14, bob: "III bob. Elektromagnit tebranishlar", title: "14-mavzu. Oʻzgaruvchan tok zanjiridagi aktiv qarshilik", plans: ["Oʻzgaruvchan tok va kuchlanishning tebranish tenglamalari.", "Om qonunining aktiv qarshilikli zanjir uchun koʻrinishi.", "Oʻzgaruvchan tokning ta'sir etuvchi qiymatlari (I_eff = I_m / √2)."], info: "Aktiv qarshilikda tok va kuchlanish tebranishlari bir xil fazada bo'ladi."},
+            {id: 15, bob: "III bob. Elektromagnit tebranishlar", title: "15-mavzu. Oʻzgaruvchan tok zanjiridagi kondensator", plans: ["Kondensatorning sigʻim qarshiligi (X_C = 1 / (ω C)).", "Tok va kuchlanish oʻrtasidagi fazalar farqi (tok 90° ga oldinda).", "Sigʻim qarshiligida quvvat sarfi va reaktiv quvvat."], info: "Kondensatorda o'zgaruvchan tok oqganda sig'im qarshiligi X_C = 1/(ωC) hosil bo'ladi."},
+            {id: 16, bob: "III bob. Elektromagnit tebranishlar", title: "16-mavzu. Oʻzgaruvchan tok zanjiridagi induktiv gʻaltak", plans: ["Induktiv gʻaltakning induktiv qarshiligi (X_L = ω L).", "Tok va kuchlanish orasidagi fazaviy siljish (kuchlanish 90° ga oldinda).", "Induktiv qarshilikning chastotaga bogʻliqligi."], info: "Induktiv g'altak o'zinduksiya tufayli tokka X_L = ωL qarshilik ko'rsatadi."},
+            {id: 17, bob: "III bob. Elektromagnit tebranishlar", title: "17-mavzu. RLC ketma-ket ulangan oʻzgaruvchan tok zanjiri uchun Om qonuni", plans: ["RLC ketma-ket zanjirida toʻliq qarshilik (impedans Z).", "Vektorli diagrammalar usuli yordamida zanjirni hisoblash.", "Fazalar siljish burchagini aniqlash (tg φ = (X_L - X_C) / R)."], info: "RLC zanjirining to'liq qarshiligi Z = √(R² + (X_L - X_C)²) formulasi bilan topiladi."},
+            {id: 18, bob: "III bob. Elektromagnit tebranishlar", title: "18-mavzu. Oʻzgaruvchan tok zanjirida rezonans hodisasi", plans: ["Kuchlanishlar rezonansi sharti (X_L = X_C) va rezonans chastotasi.", "Rezonans vaqtida tok va kuchlanish qiymatlarining keskin ortishi.", "Rezonans hodisasining radiotexnikadagi amaliy ahamiyati."], info: "X_L = X_C bo'lganda zanjirning impedansi minimal (Z = R) bo'ladi va tok kuchi maksimal qiymatga erishadi."},
+            {id: 19, bob: "III bob. Elektromagnit tebranishlar", title: "19-mavzu. Laboratoriya ishi: Oʻzgaruvchan tok zanjirida rezonansni oʻrganish", plans: ["Laboratoriya qurilmasini yigʻish va oʻlchov asboblarini ulash.", "Chastotaga bogʻliq ravishda tok va kuchlanishni oʻlchash va grafik qurish.", "Tajriba natijalarini nazariy hisoblashlar bilan solishtirish."], info: "Generator chastotasini o'zgartirib rezonans egri chizig'ini amalda hosil qilish bajariladi."},
+            {id: 20, bob: "III bob. Elektromagnit tebranishlar", title: "20-mavzu. Oʻzgaruvchan tokning ishi va quvvati. Quvvat koeffitsiyenti", plans: ["Oʻzgaruvchan tokning aktiv (P = U I cos φ) va reaktiv quvvatlari.", "Quvvat koeffitsiyenti (cos φ) va uning fizik mantiqiy ma'nosi.", "Sanoatda quvvat koeffitsiyentini oshirish usullari."], info: "Zanjirda faqat aktiv qarshilik foydali ish bajaradi. P = U I cos(φ)."},
+            {id: 21, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "21-mavzu. Elektromagnit tebranishlarning tarqalishi va tezligi", plans: ["Maksvell nazariyasi va elektromagnit toʻlqinlar paydo boʻlishi.", "Elektromagnit toʻlqin tezligi (c ≈ 3·10⁸ m/s).", "Elektromagnit toʻlqinlar shkalasi va koʻndalangligi."], info: "E va B vektorlari o'zaro tik tebranib, c tezlikda tarqaluvchi ko'ndalang to'lqinni hosil qiladi."},
+            {id: 22, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "22-mavzu. Yorugʻlik interferensiyasi", plans: ["Kogerent yorugʻlik manbalari va toʻlqinlarning ustma-ust tushishi.", "Interferensiya maksimum va minimum shartlari.", "Yung tajribasi va yupqa pardalardagi interferensiya."], info: "Ikki kogerent to'lqin ustma-ust tushganda fazoda yorug' va qorong'i mintaqalar hosil bo'ladi."},
+            {id: 23, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "23-mavzu. Yorugʻlik difraksiyasi", plans: ["Gyuygens-Frenel prinsipi va toʻsiqlarni aylanib oʻtish.", "Bir tirqishdan difraksiya va Frenel zonalari.", "Difraksiya panjarasi va uning spektrometriyaning asosiy elementi ekanligi."], info: "Yorug'lik to'siqlar atrofida burilib o'tishi difraksiyadir. d sin θ = k λ."},
+            {id: 24, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "24-mavzu. Yorugʻlik polyarizatsiyasi", plans: ["Tabiiy va polyarizatsiyalangan yorugʻlik.", "Polyaroidlar va Malyus qonuni (I = I_0 cos² φ).", "Bryuster qonuni (tg i_B = n2 / n1)."], info: "Polyarizatsiya yorug'lik to'lqinining ko'ndalangligini isbotlaydi."},
+            {id: 25, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "25-mavzu. Yorugʻlikning dispersion va yutilishi", plans: ["Yorugʻlik dispersiyasi hodisasi va Nyuton tajribalari.", "Prizmada yorugʻlikning ranglarga ajralishi.", "Yorugʻlikning moddalarda yutilishi va Buger qonuni."], info: "Dispersiya — muhit sindirish ko'rsatkichining to'lqin uzunligiga bog'liqligidir."},
+            {id: 26, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "26-mavzu. Yorugʻlikning sochilish hodisasi", plans: ["Yorugʻlikning molekulyar va kichik zarrachalardan sochilishi.", "Reley qonuni (I ~ 1 / λ⁴).", "Osmonning koʻk va shafaqning qizil koʻrinishi sabablari."], info: "Reley qonuniga ko'ra sochilish intensivligi to'lqin uzunligining 4-darajasiga teskari proporsional (1/λ⁴)."},
+            {id: 27, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "27-mavzu. Yorugʻlik nurlanishi va issiqlik nurlanish qonunlari", plans: ["Absolyut qora jism tushunchasi va issiqlik nurlanishi.", "Stefan-Bolsman qonuni (R = σ T⁴).", "Vinning siljish qonuni (λ_max T = b)."], info: "Absolyut qora jism nurlanish quvvati haroratning 4-darajasiga proporsional (R = σ T⁴)."},
+            {id: 28, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "28-mavzu. Fotoeffekt hodisasi va Eynshteyn tenglamasi", plans: ["Fotoeffekt hodisasi va Stoletov tajribalari.", "Fotoeffekt qonunlari va qizil chegarasi.", "Eynshteynning fotoeffekt tenglamasi (h ν = A + m v² / 2)."], info: "Yorug'lik ta'sirida metalldan elektronlar ajralib chiqishi fotoeffektdir."},
+            {id: 29, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "29-mavzu. Foton. Fotonning impulsi va energiyasi", plans: ["Yorugʻlik kvanti — foton tushunchasi.", "Foton energiyasi (E = h ν) va impulsi (p = h / λ).", "Kompton effekti va yorugʻlikning korpuskulyar xossalari."], info: "Foton hν energiyaga va p = h/λ impulsga ega."},
+            {id: 30, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "30-mavzu. Yorugʻlikning bosimi. Lebedev tajribalari", plans: ["Yorugʻlik bosimi tushunchasi va Maksvell nazariyasi.", "P.N. Lebedevning nozik tajribalari.", "Yorugʻlik bosimining hisoblanishi (p = I (1 + R) / c)."], info: "Fotonlar sirtga urilganda impuls beradi va bosim hosil qiladi."},
+            {id: 31, bob: "IV bob. Elektromagnit toʻlqinlar va toʻlqin optikasi", title: "31-mavzu. Laboratoriya ishi: Difraksiya panjarasi yordamida toʻlqin uzunligini oʻlchash", plans: ["Difraksiya panjarasi va spektrometrni sozlash.", "K-tartibli maksimum burchaklarini oʻlchash.", "Toʻlqin uzunligini (λ = d sin θ / k) hisoblash."], info: "Difraksiya panjarasi ekranida hosil bo'lgan maksimumlar yordamida λ aniqlanadi."},
+            {id: 32, bob: "V bob. Nisbiylik nazariyasi", title: "32-mavzu. Maxsus nisbiylik nazariyasi asoslari", plans: ["Eynshteyn postulatlari va yorugʻlik tezligining oʻzgarmasligi.", "Relyativistik vaqt choʻzilishi.", "Uzunlikning relyativistik qisqarishi."], info: "Yorug'lik tezligi c barcha sanoat sistemalarida bir xil. Harakatlanayotgan sistemada vaqt sekinlashadi."},
+            {id: 33, bob: "V bob. Nisbiylik nazariyasi", title: "33-mavzu. Relyativistik dinamika va E = mc² formulasi", plans: ["Massaning tezlikka bogʻliqligi.", "Relyativistik impuls va toʻliq energiya.", "Eynshteynning massa va energiya ekvivalentligi (E = m c²)."], info: "Jism tezligi c ga yaqinlashganda uning massasi ortadi. E = mc²."},
+            {id: 34, bob: "V bob. Nisbiylik nazariyasi", title: "34-mavzu. Lorens almashtirishlari", plans: ["Galiley almashtirishlarining cheklanganligi.", "Lorens almashtirish tenglamalari (x', y', z', t').", "Bir vaqtlilikning nisbiyligi tushunchasi."], info: "Yorug'lik tezligiga yaqin harakatlarda Lorens almashtirishlari qo'llaniladi."},
+            {id: 35, bob: "V bob. Nisbiylik nazariyasi", title: "35-mavzu. Umumiy nisbiylik nazariyasi tushunchalari", plans: ["Ekvivalentlik prinsipi.", "Fazo-vaqt egri chizigʻi va tortishish maydoni.", "Qora tuynuklar va yorugʻlikning gravitatsion ogʻishi."], info: "Gravitatsiya bu og'ir jismlar atrofida fazo-vaqtning egilishidir."},
+            {id: 36, bob: "V bob. Nisbiylik nazariyasi", title: "36-mavzu. Nisbiylik nazariyasining tajribaviy isbotlari", plans: ["Maykelson-Morli tajribasi.", "Muonlarning yashash vaqtining uzayishi.", "Gravitatsion qizil siljish va GPS tuzatishlari."], info: "Maykelson tajribasi ether mavjud emasligini ko'rsatdi."},
+            {id: 37, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "37-mavzu. Atomning Bor modeli va Bor postulatlari", plans: ["Rezerford tajribasi va klassik atom modelining inqirozi.", "Bor postulatlari.", "Vodorod atomining energetik sathlari va chiziqli spektrlar."], info: "Bor postulatlariga ko'ra elektron turg'un orbitada nurlanmasdan harakat qiladi."},
+            {id: 38, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "38-mavzu. Lazer va ularning turlari", plans: ["Spontan va majburiy nurlanish.", "Invers toʻldirilganlik holati.", "Lazer nurlarining xossalari."], info: "Lazer — majburiy nurlanish asosida ishlaydigan optik kvant generatoridir."},
+            {id: 39, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "39-mavzu. Atom yadrosining tarkibi. Bogʻlanish energiyasi. Massa defekti", plans: ["Yadroning proton-neytron modeli.", "Massa defekti (Δm).", "Yadroning bogʻlanish energiyasi (E_bogʻ = Δm c²)."], info: "Yadro massasi uni tashkil etgan erkin nuklonlar massalari yig'indisidan kichik."},
+            {id: 40, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "40-mavzu. Radioaktiv nurlanishni va zarralarni qayd qilish usullari", plans: ["Radioaktiv nurlar turlari (Alfa, Beta, Gamma).", "Geyger-Muller hisoblagichi.", "Vilson kamerasi va pufakchali kamera."], info: "Alfa — geliy yadrolari, Beta — tez elektronlar, Gamma — fotonlardir."},
+            {id: 41, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "41-mavzu. Radioaktiv yemirilish qonuni", plans: ["Radioaktiv yemirilishning statistik xarakteri.", "Radioaktiv yemirilish qonuni (N(t) = N_0 2^(-t / T)).", "Yarim yemirilish davri (T_1/2)."], info: "Yarim yemirilish davri T_1/2 davomida dastlabki radioaktiv yadrolarning teng yarmi yemiriladi."},
+            {id: 42, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "42-mavzu. Yadro reaksiyalari. Soddi siljish qonuni", plans: ["Yadro reaksiyalarida saqlanish qonunlari.", "Alfa va beta-yemirilishda Soddi siljish qonuni.", "Ekzotermik va endotermik yadro reaksiyalari."], info: "Alfa-yemirilishda yadro zaryadi Z 2 birlikka, massa soni A 4 birlikka kamayadi."},
+            {id: 43, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "43-mavzu. Elementar zarralar", plans: ["Elementar zarralar tasnifi (Leptonlar, Adronlar, Bozonlar).", "Kvarklar modeli.", "Antizarralar va annigilyatsiya hodisasi."], info: "Proton va neytronlar kvarklardan tashkil topgan."},
+            {id: 44, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "44-mavzu. Atom energetikasining fizik asoslari va AES", plans: ["Uran-235 yadrosining boʻlinishi va zanjirli yadro reaksiyasi.", "Yadro reaktorining tuzilishi.", "Radiatsiyaviy xavfsizlik va ekologik muhofaza."], info: "Neytronlarni ko'payish koeffitsiyenti k=1 bo'lganda boshqariladigan zanjirli reaksiya stansiyada elektr energiyasi beradi."},
+            {id: 45, bob: "VI–VII boblar. Kvant, Atom va Yadro fizikasi", title: "45-mavzu. Oʻzbekistonda yadro fizikasi sohasidagi tadqiqotlar", plans: ["Oʻzbekiston FA Yadro fizikasi instituti va ilmiy reaktor.", "Tibbiy va sanoat izotoplarini ishlab chiqarish.", "Qishloq xoʻjaligida radiatsion texnologiyalar."], info: "O'zbekiston FA Yadro fizikasi instituti (YFI) tadqiqot reaktorida tibbiy radiodiagnostika va onkologiya uchun izotoplar ishlab chiqariladi."}
+        ];
+
+        const assessments = {
+            bsb: [
+                {title: "1-BSB. Magnit maydon va Elektromagnit Induksiya (1-10 mavzular)", questions: [
+                    {q: "1. Magnit induksiya vektori B ning SI dagi birligi nima?", options: ["Veber (Wb)", "Tesla (T)", "Genri (H)", "Farad (F)"], ans: 1},
+                    {q: "2. Induksiyasi 0.4 T maydonda 5 A tokli 0.5 m o'tkazgichga ta'sir etuvchi Amper kuchi?", options: ["1.0 N", "2.0 N", "0.1 N", "0.5 N"], ans: 0},
+                    {q: "3. Induksiya EYUK nimaga bog'liq?", options: ["Magnit oqimi qiymatiga", "Magnit oqimining o'zgarish tezligiga", "Zanjir qarshiligiga", "Haroratga"], ans: 1},
+                    {q: "4. Induktivligi 0.2 H g'altakdan 4 A tok oqsa, energiyasi qancha?", options: ["1.6 J", "0.8 J", "3.2 J", "0.4 J"], ans: 1},
+                    {q: "5. Zaryadli zarracha magnit maydoniga tik kirsa, trayektoriyasi qanday bo'ladi?", options: ["To'g'ri chiziq", "Parabola", "Aylana", "Giperbola"], ans: 2}
+                ]},
+                {title: "2-BSB. Elektromagnit tebranishlar va O'zgaruvchan tok (11-20 mavzular)", questions: [
+                    {q: "1. Tomson formulasi T = 2π√(LC) nimani aniqlaydi?", options: ["Matematik mayatnik davrini", "Tebranish konturining erkin tebranishlar davrini", "To'lqin tezligini", "Kondensator quvvatini"], ans: 1},
+                    {q: "2. Kondensatorli o'zgaruvchan tok zanjirida tok kuchi va kuchlanish o'rtasidagi fazaviy siljish?", options: ["Faza mos", "Kuchlanish 90° ilgarilaydi", "Tok kuchlanishdan 90° ilgarilaydi", "180°"], ans: 2},
+                    {q: "3. RLC zanjirida rezonans sharti qaysi?", options: ["X_L = X_C", "R = 0", "X_L = 0", "ω = 0"], ans: 0},
+                    {q: "4. Tokning effektiv qiymati I_eff va ampiltuda I_m o'rtasidagi bog'liqlik?", options: ["I_eff = I_m / 2", "I_eff = I_m / √2", "I_eff = I_m · √2", "I_eff = 2 I_m"], ans: 1},
+                    {q: "5. Rezonans vaqtida RLC zanjirining to'liq qarshiligi Z nimaga teng?", options: ["Z = R", "Z = X_L + X_C", "Z = 0", "Z = ∞"], ans: 0}
+                ]}
+            ],
+            chsb: [
+                {title: "1-CHSB (I-Yarim yillik yakuniy nazorat - 1-20 mavzular)", questions: [
+                    {q: "1. 0.2 T bir jinsli magnit maydonda 10 m/s tezlik bilan tik uchib kirgan 1.6·10⁻¹⁹ C zaryadli elektronga ta'sir qiluvchi Lorens kuchi?", options: ["3.2 · 10⁻¹⁹ N", "1.6 · 10⁻¹⁹ N", "6.4 · 10⁻¹⁹ N", "0 N"], ans: 0},
+                    {q: "2. Induktivligi 0.5 H g'altakda tok 0.1 s ichida 2 A dan 4 A gacha ortdi. O'zinduksiya EYUK modulini toping.", options: ["10 V", "5 V", "20 V", "1 V"], ans: 0},
+                    {q: "3. LC tebranish konturida sig'im C 4 baravar orttirilsa, chastota qanday o'zgaradi?", options: ["2 baravar ortadi", "2 baravar kamayadi", "4 baravar kamayadi", "O'zgarmaydi"], ans: 1},
+                    {q: "4. Aktiv qarshiligi 10 Ohm zanjirda kuchlanish ta'sir etuvchi qiymati U_eff = 100 V. Aktiv quvvatni toping.", options: ["1000 W", "500 W", "1410 W", "707 W"], ans: 0},
+                    {q: "5. Amper kuchi F = I L B sin α da burchak α = 90° bo'lganda kuch qiymati qanday bo'ladi?", options: ["Nolga teng", "Maksimal", "Minimal", "Manfiy"], ans: 1}
+                ]}
+            ]
+        };
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+
+            if(tabName === 'simulations') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('sec-simulations').classList.add('active');
+            } else if(tabName === 'bsb') {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('sec-bsb').classList.add('active');
+            } else if(tabName === 'chsb') {
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                document.getElementById('sec-chsb').classList.add('active');
+            }
+        }
+
+        function renderTopics() {
+            const container = document.getElementById('topics-render-area');
+            let currentBob = "";
+            let gridElem = null;
+
+            topics.forEach((t) => {
+                if(t.bob !== currentBob) {
+                    currentBob = t.bob;
+                    const bobTitle = document.createElement('h2');
+                    bobTitle.className = 'bob-header';
+                    bobTitle.innerText = currentBob;
+                    container.appendChild(bobTitle);
+
+                    gridElem = document.createElement('div');
+                    gridElem.className = 'topics-grid';
+                    container.appendChild(gridElem);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="topic-number">Mavzu #${t.id}</div>
+                        <div class="topic-title">${t.title}</div>
+                    </div>
+                    <div class="plans-box">
+                        <strong>Dars rejasi (3 ta bosqich):</strong>
+                        <ul>
+                            <li>1. ${t.plans[0]}</li>
+                            <li>2. ${t.plans[1]}</li>
+                            <li>3. ${t.plans[2]}</li>
+                        </ul>
+                    </div>
+                    <div class="info-box">
+                        <strong>Qisqacha mazmuni:</strong> ${t.info}
+                    </div>
+                    <div class="canvas-box">
+                        <canvas id="canvas_${t.id}"></canvas>
+                    </div>
+                    <div class="controls-bar" id="ctrl_${t.id}"></div>
+                `;
+                gridElem.appendChild(card);
+            });
+        }
+
+        function renderQuizzes() {
+            const bsbArea = document.getElementById('bsb-render-area');
+            assessments.bsb.forEach((quiz, qIdx) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'quiz-card';
+                let html = `<h3>${quiz.title}</h3>`;
+                quiz.questions.forEach((q, idx) => {
+                    html += `
+                        <div class="q-item">
+                            <div class="q-text">${q.q}</div>
+                            <div class="q-options">
+                                ${q.options.map((opt, oIdx) => `
+                                    <label class="opt-label">
+                                        <input type="radio" name="bsb_${qIdx}_${idx}" value="${oIdx}">
+                                        ${opt}
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `<button class="btn-ctrl" onclick="checkQuiz('bsb', ${qIdx})">Tekshirish va Baholash</button>`;
+                html += `<div class="quiz-result" id="res_bsb_${qIdx}"></div>`;
+                qCard.innerHTML = html;
+                bsbArea.appendChild(qCard);
+            });
+
+            const chsbArea = document.getElementById('chsb-render-area');
+            assessments.chsb.forEach((quiz, qIdx) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'quiz-card';
+                let html = `<h3>${quiz.title}</h3>`;
+                quiz.questions.forEach((q, idx) => {
+                    html += `
+                        <div class="q-item">
+                            <div class="q-text">${q.q}</div>
+                            <div class="q-options">
+                                ${q.options.map((opt, oIdx) => `
+                                    <label class="opt-label">
+                                        <input type="radio" name="chsb_${qIdx}_${idx}" value="${oIdx}">
+                                        ${opt}
+                                    </label>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `<button class="btn-ctrl" onclick="checkQuiz('chsb', ${qIdx})">Imtihon Natijasini Hisoblash</button>`;
+                html += `<div class="quiz-result" id="res_chsb_${qIdx}"></div>`;
+                qCard.innerHTML = html;
+                chsbArea.appendChild(qCard);
+            });
+        }
+
+        function checkQuiz(type, qIdx) {
+            const quizGroup = assessments[type][qIdx];
+            let score = 0;
+            quizGroup.questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="${type}_${qIdx}_${idx}"]:checked`);
+                if(selected && parseInt(selected.value) === q.ans) score++;
+            });
+            const total = quizGroup.questions.length;
+            const percent = (score / total) * 100;
+            const resElem = document.getElementById(`res_${type}_${qIdx}`);
+            resElem.innerHTML = `Natija: ${score} / ${total} to'g'ri (${percent}%). Baho: ${percent >= 85 ? '5 (A)' : percent >= 70 ? '4 (B)' : percent >= 55 ? '3 (C)' : '2 (F)'}`;
+        }
+
+        function initSimulations() {
+            topics.forEach((t) => {
+                const canvas = document.getElementById(`canvas_${t.id}`);
+                const ctrl = document.getElementById(`ctrl_${t.id}`);
+                if(!canvas) return;
+                canvas.width = canvas.parentElement.clientWidth;
+                canvas.height = canvas.parentElement.clientHeight;
+                const ctx = canvas.getContext('2d');
+                setupSimulationEngine(t.id, canvas, ctx, ctrl);
+            });
+        }
+
+        function setupSimulationEngine(id, canvas, ctx, ctrl) {
+            let t = 0;
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+
+            ctrl.innerHTML = `<span style="color:#94a3b8">Mavzu #${id} vizual simulyatsiyasi va animatsiyasi.</span>`;
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                t += 0.04;
+
+                if(id === 1) {
+                    ctx.fillStyle = '#ef4444'; ctx.fillRect(cx - 50, cy - 12, 50, 24);
+                    ctx.fillStyle = '#3b82f6'; ctx.fillRect(cx, cy - 12, 50, 24);
+                    ctx.fillStyle = '#fff'; ctx.font = '12px sans-serif';
+                    ctx.fillText('N', cx - 35, cy + 4); ctx.fillText('S', cx + 25, cy + 4);
+                    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 1;
+                    for(let r = 20; r <= 80; r += 20) {
+                        ctx.beginPath(); ctx.ellipse(cx, cy, r + 40, r, 0, 0, Math.PI * 2); ctx.stroke();
+                    }
+                } else if(id === 6) {
+                    ctx.fillStyle = 'rgba(3, 7, 18, 0.2)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+                    const px = cx + Math.cos(t)*50; const py = cy + Math.sin(t)*50;
+                    ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI*2); ctx.fillStyle = '#06b6d4'; ctx.fill();
+                } else if(id === 21) {
+                    for(let x=0; x<canvas.width; x+=6) {
+                        const E = Math.sin(x*0.03 - t) * 35;
+                        ctx.strokeStyle = '#ef4444'; ctx.beginPath(); ctx.moveTo(x, cy); ctx.lineTo(x, cy - E); ctx.stroke();
+                        ctx.strokeStyle = '#3b82f6'; ctx.beginPath(); ctx.moveTo(x, cy); ctx.lineTo(x + E*0.5, cy + E*0.3); ctx.stroke();
+                    }
+                } else {
+                    ctx.strokeStyle = id % 2 === 0 ? '#10b981' : '#3b82f6';
+                    ctx.lineWidth = 2; ctx.beginPath();
+                    for(let x=0; x<canvas.width; x++) {
+                        const y = cy + Math.sin(x*0.02 + t + id) * 30 * Math.cos(t*0.5);
+                        if(x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                    }
+                    ctx.stroke();
+                }
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTopics();
+            renderQuizzes();
+            setTimeout(initSimulations, 100);
+        });
+    </script>
+</body>
+</html>
